@@ -78,23 +78,7 @@ public class NetworkUtils {
         return url;
     }
 
-    public static URL buildUrlReviews(String id) {
 
-        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
-                .appendPath(id)
-                .appendPath("reviews")
-                .appendQueryParameter("api_key", APIKey)
-                .build();
-
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        System.out.println(url);
-        return url;
-    }
 
     /**
      * This method returns the entire result from the HTTP response.

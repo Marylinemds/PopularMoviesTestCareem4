@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">PopularMoviesTestCareem</string>
+    <string name="action_filter">filter</string>
 </resources>
