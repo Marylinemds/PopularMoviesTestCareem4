@@ -80,25 +80,6 @@ public class NetworkUtils {
 
 
 
-    public static URL buildUrlVideo(String id) {
-        // COMPLETED (1) Fill in this method to build the proper Github query URL
-        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
-                .appendPath(id)
-                .appendPath("videos")
-                .appendQueryParameter("api_key", APIKey)
-                .build();
-
-        URL url = null;
-        try {
-            url = new URL(builtUri.toString());
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
-        System.out.println(url);
-        return url;
-    }
-
-
 
     /**
      * This method returns the entire result from the HTTP response.
