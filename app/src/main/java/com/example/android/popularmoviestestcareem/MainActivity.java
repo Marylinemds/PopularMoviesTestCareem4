@@ -22,10 +22,10 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.NumberPicker;
 import android.widget.Toast;
 
 import com.example.android.popularmoviestestcareem.Utilities.NetworkUtils;
+import com.shawnlin.numberpicker.NumberPicker;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     RecyclerView mMoviesList;
     public int mNumberItems;
 
+    int releaseYear;
+
 
     List<Movie> movies = new ArrayList<>();
 
@@ -60,7 +62,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
 
         if (toolbar != null){
             setSupportActionBar(toolbar);
@@ -70,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.white));
 
 
-        mMoviesList = (RecyclerView) findViewById(R.id.rv_images);
+        mMoviesList =  findViewById(R.id.rv_images);
         GridLayoutManager layoutManager;
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -90,9 +92,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
                 // Triggered only when new data needs to be appended to the list
 
-
-                URL SearchUrl = NetworkUtils.buildUrlFromPage(page + 1);
-                new TheMovieAsyncTask().execute(SearchUrl);
+                if (releaseYear == 0) {
+                    URL SearchUrl = NetworkUtils.buildUrlFromPage(page + 1);
+                    new TheMovieAsyncTask().execute(SearchUrl);
+                }else{
+                    URL SearchUrl = NetworkUtils.buildUrlFromPageandYear(page + 1, releaseYear);
+                    new TheMovieAsyncTask().execute(SearchUrl);
+                }
 
             }
 
@@ -112,24 +118,52 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         LayoutInflater inflater = getLayoutInflater();
         View view = inflater.inflate(R.layout.numberpicker, null);
 
-        final NumberPicker np = (NumberPicker) view.findViewById(R.id.numberPicker);
+        final NumberPicker np = view.findViewById(R.id.number_picker);
         builder.setView(view)
                 // Add action buttons
                 .setPositiveButton("done", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
+
                         dialog.dismiss();
+
+                        movies.clear();
+
+                        releaseYear = np.getValue();
+                        URL SearchUrl = NetworkUtils.buildUrlFromPageandYear(1, releaseYear);
+                        new TheMovieAsyncTask().execute(SearchUrl);
+
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
+
                         dialog.dismiss();
+                        np.setValue(2018);
+                        releaseYear = 0;
+
+                        makeTheQuery();
                     }
                 });
-        builder.setTitle("Pick value");
-        np.setMinValue(1900);
-        np.setMaxValue(2018);
-        np.setWrapSelectorWheel(false);
+        builder.setTitle("Release year");
+
+        // Set fading edge enabled
+        np.setFadingEdgeEnabled(true);
+
+// Set scroller enabled
+        np.setScrollerEnabled(true);
+
+
+// OnClickListener
+        np.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Click on current value");
+            }
+        });
+
+// OnValueChangeListener
+        np.setOnValueChangedListener(onValueChangeListener);
         dialog = builder.create();
 
 
@@ -219,7 +253,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
                     //System.out.println("http://image.tmdb.org/t/p/" + picSize + moviePath);
                     JSONObject obj = new JSONObject(jsonData);
-                    JSONArray results = obj.getJSONArray("items");
+                    JSONArray results = obj.getJSONArray("results");
 
 
 
@@ -230,6 +264,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
                             JSONObject resultsData = results.getJSONObject(i);
 
+
                             String originalTitle = resultsData.getString("original_title");
                             String synopsis = resultsData.getString("overview");
                             String userRating = resultsData.getString("vote_average");
@@ -239,29 +274,29 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                             String moviePath = resultsData.getString("poster_path").replace("\\Tasks", "");
                             String picSize = "w185";
 
-                            movie = new Movie();
-                            movie.setMoviePath(moviePath);
-                            movie.setOriginalTitle(originalTitle);
-                            movie.setPicSize(picSize);
-                            movie.setReleaseDate(releaseDate);
-                            movie.setSynopsis(synopsis);
-                            movie.setUserRating(userRating);
-                            movie.setPopularity(popularity);
-                            movie.setId(id);
+                            if (resultsData.getString("poster_path") != "null") {
 
-                            movies.add(movie);
+                                movie = new Movie();
+                                movie.setMoviePath(moviePath);
+                                movie.setOriginalTitle(originalTitle);
+                                movie.setPicSize(picSize);
+                                movie.setReleaseDate(releaseDate);
+                                movie.setSynopsis(synopsis);
+                                movie.setUserRating(userRating);
+                                movie.setPopularity(popularity);
+                                movie.setId(id);
 
-                            mNumberItems = results.length();
+                                movies.add(movie);
 
-                            movieAdapter.setMovies(movies);
-                            movieAdapter.notifyDataSetChanged();
+                                mNumberItems = results.length();
+
+                                movieAdapter.setMovies(movies);
+                                movieAdapter.notifyDataSetChanged();
+                            }
                         }
 
-
-
                             movieAdapter.setMovies(movies);
                             movieAdapter.notifyDataSetChanged();
-
 
 
                 } catch (JSONException e) {
@@ -269,11 +304,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 }
             }
         }}
-
-
-
-
-
 
     }
 

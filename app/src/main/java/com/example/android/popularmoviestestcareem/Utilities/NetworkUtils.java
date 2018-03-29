@@ -24,7 +24,7 @@ public class NetworkUtils {
 
 
     final static String MOVIE_BASE_URL =
-            "http://api.themoviedb.org/3/list/";
+            "https://api.themoviedb.org/3/discover/movie";
 
     final static String APIKey = "93aea0c77bc168d8bbce3918cefefa45";
 
@@ -44,8 +44,28 @@ public class NetworkUtils {
 
     public static URL buildUrlFromPage(int page) {
         Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
-                .appendPath(String.valueOf(page))
                 .appendQueryParameter("api_key", APIKey)
+                .appendQueryParameter("sort_by", "release_date.desc")
+                .appendQueryParameter("release_date.lte", "2018")
+                .appendQueryParameter("page", String.valueOf(page))
+                .build();
+
+        URL url = null;
+        try {
+            url = new URL(builtUri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        System.out.println(url);
+        return url;
+    }
+
+    public static URL buildUrlFromPageandYear(int page, int year) {
+        Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
+                .appendQueryParameter("api_key", APIKey)
+                .appendQueryParameter("sort_by", "release_date.desc")
+                .appendQueryParameter("page", String.valueOf(page))
+                .appendQueryParameter("year", String.valueOf(year))
                 .build();
 
         URL url = null;
