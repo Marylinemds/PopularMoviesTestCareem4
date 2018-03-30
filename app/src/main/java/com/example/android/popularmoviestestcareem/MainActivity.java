@@ -1,21 +1,16 @@
 package com.example.android.popularmoviestestcareem;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,9 +45,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
     int releaseYear;
 
-
     List<Movie> movies = new ArrayList<>();
-
 
     private EndlessRecyclerViewScrollListener scrollListener;
 
@@ -61,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        Log.d(TAG, "Activity created");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
@@ -82,9 +77,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         }
 
         mMoviesList.setLayoutManager(layoutManager);
-
         movieAdapter = new MovieAdapter(this);
-
         mMoviesList.setAdapter(movieAdapter);
 
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager){
@@ -99,76 +92,20 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                     URL SearchUrl = NetworkUtils.buildUrlFromPageandYear(page + 1, releaseYear);
                     new TheMovieAsyncTask().execute(SearchUrl);
                 }
-
             }
-
         };
 
         // Adds the scroll listener to RecyclerView
         mMoviesList.addOnScrollListener(scrollListener);
 
-
-
-        //np.setOnValueChangedListener(onValueChangeListener);
+        buildFilterDialog();
 
 
 
-        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-// Get the layout inflater
-        LayoutInflater inflater = getLayoutInflater();
-        View view = inflater.inflate(R.layout.numberpicker, null);
-
-        final NumberPicker np = view.findViewById(R.id.number_picker);
-        builder.setView(view)
-                // Add action buttons
-                .setPositiveButton("done", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        dialog.dismiss();
-
-                        movies.clear();
-
-                        releaseYear = np.getValue();
-                        URL SearchUrl = NetworkUtils.buildUrlFromPageandYear(1, releaseYear);
-                        new TheMovieAsyncTask().execute(SearchUrl);
-
-                    }
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-
-                        dialog.dismiss();
-                        np.setValue(2018);
-                        releaseYear = 0;
-
-                        makeTheQuery();
-                    }
-                });
-        builder.setTitle("Release year");
-
-        // Set fading edge enabled
-        np.setFadingEdgeEnabled(true);
-
-// Set scroller enabled
-        np.setScrollerEnabled(true);
-
-
-// OnClickListener
-        np.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "Click on current value");
-            }
-        });
-
-// OnValueChangeListener
-        np.setOnValueChangedListener(onValueChangeListener);
-        dialog = builder.create();
-
-
-        makeTheQuery();
-
+        if (savedInstanceState != null) {
+            releaseYear = savedInstanceState.getInt("releaseYear");
+            makeTheQuery();
+        }
     }
 
     NumberPicker.OnValueChangeListener onValueChangeListener =
@@ -189,11 +126,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public boolean onOptionsItemSelected(MenuItem item) {
 
         if(item.getItemId() == R.id.action_filter){
-
             dialog.show();
-
-
         }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -202,7 +137,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     public void onClick(Movie movie) {
 
         Context context = MainActivity.this;
-
         Class destinationActivity = ChildActivity.class;
 
         Intent startChildActivityIntent = new Intent(context, destinationActivity);
@@ -210,19 +144,92 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         startActivity(startChildActivityIntent);
     }
 
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+
+        super.onSaveInstanceState(savedInstanceState);
+
+        // Save UI state changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is
+        // killed and restarted.
+
+        savedInstanceState.putInt("releaseYear", releaseYear);
+
+        // etc.
+
+
+    }
+
+    public void buildFilterDialog(){
+        final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        // Get the layout inflater
+        LayoutInflater inflater = getLayoutInflater();
+        View view = inflater.inflate(R.layout.numberpicker, null);
+
+        final NumberPicker np = view.findViewById(R.id.number_picker);
+        builder.setView(view)
+                // Add action buttons
+                .setPositiveButton("done", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.dismiss();
+                        movies.clear();
+
+                        releaseYear = np.getValue();
+                        makeTheQuery();
+
+                    }
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+
+                        dialog.dismiss();
+                        np.setValue(2018);
+                        releaseYear = 0;
+
+                        makeTheQuery();
+                    }
+                });
+        builder.setTitle("Release year");
+
+        // Set fading edge enabled
+        np.setFadingEdgeEnabled(true);
+
+        // Set scroller enabled
+        np.setScrollerEnabled(true);
+
+        // OnClickListener
+        np.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Log.d(TAG, "Click on current value");
+            }
+        });
+
+// OnValueChangeListener
+        np.setOnValueChangedListener(onValueChangeListener);
+        dialog = builder.create();
+
+    }
+
 
 
     private void makeTheQuery() {
         movies.clear();
 
-        URL SearchUrl = NetworkUtils.buildUrlFromPage(1);
 
-
-        new TheMovieAsyncTask().execute(SearchUrl);
-
+        if (releaseYear == 0) {
+            URL SearchUrl = NetworkUtils.buildUrlFromPage(1);
+            new TheMovieAsyncTask().execute(SearchUrl);
+            Log.d(TAG, "Simple query with year" + releaseYear );
+        }else{
+            URL SearchUrl = NetworkUtils.buildUrlFromPageandYear(1, releaseYear);
+            new TheMovieAsyncTask().execute(SearchUrl);
+            Log.d(TAG, "Filtered query with year " + releaseYear);
+        }
 
     }
-
 
     public class TheMovieAsyncTask extends AsyncTask<URL, Void, String> {
 
@@ -230,32 +237,26 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         @Override
         protected String doInBackground(URL... params) {
 
+
             URL url = params[0];
             String movieData = null;
             try {
                 movieData = NetworkUtils.getResponseFromHttpUrl(url);
-
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
             return movieData;
-
         }
 
         @Override
         protected void onPostExecute(String jsonData) {
 
-
             System.out.println("JSON " + jsonData);
             if (jsonData != null) {
                 try {
-
                     //System.out.println("http://image.tmdb.org/t/p/" + picSize + moviePath);
                     JSONObject obj = new JSONObject(jsonData);
                     JSONArray results = obj.getJSONArray("results");
-
-
 
                         //iterate through JSON object and set fields to strings
                         for (int i = 0; i < results.length(); i++) {
@@ -263,7 +264,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                             Movie movie;
 
                             JSONObject resultsData = results.getJSONObject(i);
-
 
                             String originalTitle = resultsData.getString("original_title");
                             String synopsis = resultsData.getString("overview");
@@ -289,7 +289,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                                 movies.add(movie);
 
                                 mNumberItems = results.length();
-
                                 movieAdapter.setMovies(movies);
                                 movieAdapter.notifyDataSetChanged();
                             }
@@ -298,13 +297,9 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                             movieAdapter.setMovies(movies);
                             movieAdapter.notifyDataSetChanged();
 
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         }}
-
     }
-
-

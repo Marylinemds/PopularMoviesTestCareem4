@@ -63,7 +63,7 @@ public class NetworkUtils {
     public static URL buildUrlFromPageandYear(int page, int year) {
         Uri builtUri = Uri.parse(MOVIE_BASE_URL).buildUpon()
                 .appendQueryParameter("api_key", APIKey)
-                .appendQueryParameter("sort_by", "popularity")
+                .appendQueryParameter("sort_by", "release_date.desc")
                 .appendQueryParameter("page", String.valueOf(page))
                 .appendQueryParameter("year", String.valueOf(year))
                 .build();
