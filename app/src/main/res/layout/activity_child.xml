@@ -20,13 +20,13 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="35sp"
+            android:textAppearance="?android:textAppearanceLarge"
             android:id="@+id/movie_title"
             android:paddingTop="20dp"
             android:paddingBottom="20dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            android:textColor="#FFFFFF"
+            android:textColor="@color/white"
             android:background="#0097A7"/>
 
         <LinearLayout
@@ -53,9 +53,7 @@
                     android:layout_height="wrap_content"
                     android:id="@+id/movie_title_2"
                     android:paddingBottom="8dp"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
-                    android:textColor="@android:color/black"/>
+                    android:textAppearance="?android:textAppearanceLarge"/>
 
 
 
@@ -72,8 +70,7 @@
                         android:layout_height="match_parent"
                         android:paddingRight="80dp"
                         android:id="@+id/release_date"
-                        android:textSize="32sp"
-                        android:textColor="@android:color/black"/>
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
 
 
                 </LinearLayout>
@@ -91,7 +88,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="16sp"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
                     android:id="@+id/vote_average_2"/>
 
 
@@ -108,7 +105,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/sypnosis"
-                android:textSize="16sp"
+                android:textAppearance="?android:attr/textAppearanceSmall"
                 android:padding="16dp"/>
 
 

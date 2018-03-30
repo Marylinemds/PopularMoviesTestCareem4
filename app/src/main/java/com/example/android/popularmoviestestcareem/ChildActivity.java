@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
@@ -19,6 +20,8 @@ import com.squareup.picasso.Picasso;
 
 
 public class ChildActivity extends AppCompatActivity{
+
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     ImageView movieDisplay;
     TextView originalTitle_tv;
@@ -38,6 +41,8 @@ public class ChildActivity extends AppCompatActivity{
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child);
+
+        Log.d(TAG, "Activity created");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
 
