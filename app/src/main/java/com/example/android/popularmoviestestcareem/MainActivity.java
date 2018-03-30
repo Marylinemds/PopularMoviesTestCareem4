@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -17,6 +19,8 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.android.popularmoviestestcareem.Utilities.NetworkUtils;
@@ -105,8 +109,19 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         //Recovering the release year in case of screen rotation
         if (savedInstanceState != null) {
             releaseYear = savedInstanceState.getInt("releaseYear");
-            makeTheQuery();
         }
+        makeTheQuery();
+
+        //Displaying an error message, informing the user if there is no Internet connexion
+        FrameLayout rvFrameLayout = findViewById((R.id.rv_frame_layout));
+        TextView errorMessage = findViewById(R.id.error);
+
+        if (!networkUp()){
+            rvFrameLayout.setVisibility(View.GONE);
+            errorMessage.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
     @Override
@@ -293,4 +308,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 }
             }
         }}
+
+    private boolean networkUp() {
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = null;
+        if (cm != null) { networkInfo = cm.getActiveNetworkInfo();}
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    }
     }
