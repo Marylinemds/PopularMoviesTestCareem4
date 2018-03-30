@@ -15,31 +15,16 @@ import java.net.URL;
 import java.util.Scanner;
 
 
-
 /**
  * These utilities will be used to communicate with the network.
  */
 public class NetworkUtils {
 
 
-
     final static String MOVIE_BASE_URL =
             "https://api.themoviedb.org/3/discover/movie";
 
     final static String APIKey = "93aea0c77bc168d8bbce3918cefefa45";
-
-
-        /*
-         * The sort field. One of stars, forks, or updated.
-         * Default: results are sorted by best match if no field is specified.
-         */
-
-    /**
-     * Builds the URL used to query Github.
-     *
-     *  The keyword that will be queried for.
-     * @return The URL to use to query the weather server.
-     */
 
 
     public static URL buildUrlFromPage(int page) {
@@ -77,7 +62,6 @@ public class NetworkUtils {
         System.out.println(url);
         return url;
     }
-
 
 
 

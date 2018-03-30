@@ -11,11 +11,10 @@ public class Movie implements Parcelable {
 
     String originalTitle;
     String moviePath;
-    String synopsis; //called overview in the api
-    String userRating; //called vote_average in the api
+    String synopsis;
+    String userRating;
     String releaseDate;
     String picSize;
-    String popularity;
     String id;
 
     public Movie(){
@@ -29,16 +28,6 @@ public class Movie implements Parcelable {
     public void setId(String id) {
         this.id = id;
     }
-
-
-    public String getPopularity() {
-        return popularity;
-    }
-
-    public void setPopularity(String popularity) {
-        this.popularity = popularity;
-    }
-
 
     public String getOriginalTitle() {
         return originalTitle;

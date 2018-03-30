@@ -1,5 +1,4 @@
 <resources>
     <string name="app_name">PopularMoviesTestCareem</string>
     <string name="action_filter">filter</string>
-    <string name="number_picker_formatter">String</string>
 </resources>

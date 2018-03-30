@@ -38,15 +38,11 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private static final String TAG = MainActivity.class.getSimpleName();
 
     AlertDialog dialog;
-
     MovieAdapter movieAdapter;
     RecyclerView mMoviesList;
-    public int mNumberItems;
-
-    int releaseYear;
-
     List<Movie> movies = new ArrayList<>();
 
+    private int releaseYear;
     private EndlessRecyclerViewScrollListener scrollListener;
 
 
@@ -57,16 +53,17 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
         Log.d(TAG, "Activity created");
 
+        //Setting the appBar
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         if (toolbar != null){
             setSupportActionBar(toolbar);
+            toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.white));
         }
 
         getSupportActionBar().setTitle("CareemTest");
-        toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.white));
 
-
+        //Setting the RecyclerView
         mMoviesList =  findViewById(R.id.rv_images);
         GridLayoutManager layoutManager;
 
@@ -77,9 +74,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         }
 
         mMoviesList.setLayoutManager(layoutManager);
+
+        //Setting the adapter
         movieAdapter = new MovieAdapter(this);
         mMoviesList.setAdapter(movieAdapter);
 
+
+        //Setting the scrollListener
         scrollListener = new EndlessRecyclerViewScrollListener(layoutManager){
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -98,24 +99,15 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         // Adds the scroll listener to RecyclerView
         mMoviesList.addOnScrollListener(scrollListener);
 
+        //Building the AlertDialog to filter the movies by Date
         buildFilterDialog();
 
-
-
+        //Recovering the release year in case of screen rotation
         if (savedInstanceState != null) {
             releaseYear = savedInstanceState.getInt("releaseYear");
             makeTheQuery();
         }
     }
-
-    NumberPicker.OnValueChangeListener onValueChangeListener =
-            new 	NumberPicker.OnValueChangeListener(){
-                @Override
-                public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                    Toast.makeText(MainActivity.this,
-                            "selected number "+numberPicker.getValue(), Toast.LENGTH_SHORT);
-                }
-            };
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -155,9 +147,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
 
         savedInstanceState.putInt("releaseYear", releaseYear);
 
-        // etc.
-
-
     }
 
     public void buildFilterDialog(){
@@ -193,10 +182,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 });
         builder.setTitle("Release year");
 
-        // Set fading edge enabled
-        np.setFadingEdgeEnabled(true);
 
-        // Set scroller enabled
+        np.setFadingEdgeEnabled(true);
         np.setScrollerEnabled(true);
 
         // OnClickListener
@@ -207,17 +194,24 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             }
         });
 
-// OnValueChangeListener
-        np.setOnValueChangedListener(onValueChangeListener);
+       // OnValueChangeListener
+        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                Toast.makeText(MainActivity.this,
+                        "selected number "+numberPicker.getValue(), Toast.LENGTH_SHORT);
+            }
+        });
+
         dialog = builder.create();
 
     }
 
 
-
     private void makeTheQuery() {
-        movies.clear();
+        //After clearing the list of movies, making the general query/filtered query
 
+        movies.clear();
 
         if (releaseYear == 0) {
             URL SearchUrl = NetworkUtils.buildUrlFromPage(1);
@@ -254,7 +248,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
             System.out.println("JSON " + jsonData);
             if (jsonData != null) {
                 try {
-                    //System.out.println("http://image.tmdb.org/t/p/" + picSize + moviePath);
+
                     JSONObject obj = new JSONObject(jsonData);
                     JSONArray results = obj.getJSONArray("results");
 
@@ -269,7 +263,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                             String synopsis = resultsData.getString("overview");
                             String userRating = resultsData.getString("vote_average");
                             String releaseDate = resultsData.getString("release_date");
-                            String popularity = resultsData.getString("popularity");
                             String id = resultsData.getString("id");
                             String moviePath = resultsData.getString("poster_path").replace("\\Tasks", "");
                             String picSize = "w185";
@@ -283,12 +276,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                                 movie.setReleaseDate(releaseDate);
                                 movie.setSynopsis(synopsis);
                                 movie.setUserRating(userRating);
-                                movie.setPopularity(popularity);
                                 movie.setId(id);
 
                                 movies.add(movie);
 
-                                mNumberItems = results.length();
                                 movieAdapter.setMovies(movies);
                                 movieAdapter.notifyDataSetChanged();
                             }
