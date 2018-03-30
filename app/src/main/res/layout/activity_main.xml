@@ -5,16 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        layout="@layout/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"/>
+    <include layout="@layout/toolbar" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/rv_frame_layout">
-
 
     <android.support.v7.widget.RecyclerView
         android:layout_width="match_parent"
@@ -22,7 +18,6 @@
         android:id="@+id/rv_images">
 
     </android.support.v7.widget.RecyclerView>
-
 
     </FrameLayout>
 

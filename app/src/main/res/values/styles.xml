@@ -11,7 +11,7 @@
     <style name="movieRatingBar" parent="@android:style/Widget.RatingBar">
         <item name="android:progressDrawable">@drawable/ratingstars</item>
         <item name="android:minHeight">22dip</item>
-        <item name="android:maxHeight">22dip</item>
+        <item name="android:maxHeight">44dip</item>
     </style>
 
 

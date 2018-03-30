@@ -201,22 +201,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         np.setFadingEdgeEnabled(true);
         np.setScrollerEnabled(true);
 
-        // OnClickListener
-        np.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Log.d(TAG, "Click on current value");
-            }
-        });
-
-       // OnValueChangeListener
-        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener(){
-            @Override
-            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
-                Toast.makeText(MainActivity.this,
-                        "selected number "+numberPicker.getValue(), Toast.LENGTH_SHORT);
-            }
-        });
 
         dialog = builder.create();
 

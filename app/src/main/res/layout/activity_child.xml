@@ -76,11 +76,11 @@
                 </LinearLayout>
 
                 <RatingBar
-                    android:paddingTop="8dp"
+                    android:layout_marginTop="8dp"
                     android:id="@+id/vote_average"
                     android:layout_height="wrap_content"
                     android:layout_width="wrap_content"
-                    android:paddingBottom="8dp"
+                    android:layout_marginBottom="8dp"
                     android:isIndicator="true"
                     style="@style/movieRatingBar" />
 
