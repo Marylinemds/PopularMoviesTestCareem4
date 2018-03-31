@@ -11,11 +11,7 @@
         android:layout_width="match_parent"
         android:orientation="vertical">
 
-        <include
-            layout="@layout/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"/>
-
+        <include layout="@layout/toolbar" />
 
         <TextView
             android:layout_width="match_parent"
@@ -58,22 +54,13 @@
 
 
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-
                     <TextView
                         android:gravity="bottom"
                         android:layout_width="wrap_content"
                         android:layout_height="match_parent"
-                        android:paddingRight="80dp"
                         android:id="@+id/release_date"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
-
-                </LinearLayout>
 
                 <RatingBar
                     android:layout_marginTop="8dp"
@@ -96,10 +83,7 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+
 
             <TextView
                 android:layout_width="match_parent"
@@ -109,7 +93,6 @@
                 android:padding="16dp"/>
 
 
-        </LinearLayout>
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>

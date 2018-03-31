@@ -21,7 +21,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.android.popularmoviestestcareem.Utilities.NetworkUtils;
 import com.shawnlin.numberpicker.NumberPicker;
@@ -269,13 +268,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                             if (resultsData.getString("poster_path") != "null") {
 
                                 movie = new Movie();
-                                movie.setMoviePath(moviePath);
                                 movie.setOriginalTitle(originalTitle);
-                                movie.setPicSize(picSize);
-                                movie.setReleaseDate(releaseDate);
                                 movie.setSynopsis(synopsis);
                                 movie.setUserRating(userRating);
+                                movie.setReleaseDate(releaseDate);
                                 movie.setId(id);
+                                movie.setMoviePath(moviePath);
+                                movie.setPicSize(picSize);
 
                                 movies.add(movie);
 
