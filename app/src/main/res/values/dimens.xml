@@ -2,4 +2,6 @@
 <resources>
     <dimen name="selected_text_size">56dp</dimen>
     <dimen name="text_size">56dp</dimen>
+    <dimen name="general_padding">16dp</dimen>
+    <dimen name="layout_height_vignette">180dp</dimen>
 </resources>

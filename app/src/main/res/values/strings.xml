@@ -1,6 +1,7 @@
 <resources>
-    <string name="app_name">PopularMoviesTestCareem</string>
-    <string name="action_filter">filter</string>
+    <string name="app_name" translatable="false">PopularMoviesTestCareem</string>
+    <string name="action_filter" translatable="false">filter</string>
     <string name="error_message">Oups... It seems that you are not connected to Internet.
         Please check your connexion and restart the app.</string>
+    <string name="description_image">movie poster</string>
 </resources>

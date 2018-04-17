@@ -1,4 +1,4 @@
-package com.example.android.popularmoviestestcareem;
+package com.example.android.popularmoviestestcareem.Listeners;
 
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;

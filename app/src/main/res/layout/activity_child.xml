@@ -14,84 +14,71 @@
         <include layout="@layout/toolbar" />
 
         <TextView
+            android:id="@+id/movie_title"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceLarge"
-            android:id="@+id/movie_title"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:padding="@dimen/general_padding"
             android:textColor="@color/white"
-            android:background="#0097A7"/>
+            android:background="@color/green_careem"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-
             <ImageView
-                android:padding="16dp"
+                android:id="@+id/display_movie"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/display_movie"/>
-
+                android:padding="@dimen/general_padding"
+                android:contentDescription="@string/description_image" />
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="@dimen/layout_height_vignette"
+                android:padding="@dimen/general_padding"
+                android:orientation="vertical">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:id="@+id/movie_title_2"
-                    android:paddingBottom="8dp"
-                    android:textAppearance="?android:textAppearanceLarge"/>
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="2"
+                    android:textAppearance="?android:textAppearanceMedium"/>
 
-
-
-
-                    <TextView
-                        android:gravity="bottom"
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:id="@+id/release_date"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
-
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <RatingBar
-                    android:layout_marginTop="8dp"
                     android:id="@+id/vote_average"
-                    android:layout_height="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
                     android:layout_width="wrap_content"
-                    android:layout_marginBottom="8dp"
                     android:isIndicator="true"
                     style="@style/movieRatingBar" />
 
-
                 <TextView
+                    android:id="@+id/vote_average_2"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/vote_average_2"/>
-
+                    android:layout_height="0dp"
+                    android:layout_weight="1"
+                    android:textAppearance="?android:attr/textAppearanceSmall" />
 
             </LinearLayout>
 
         </LinearLayout>
 
-
-
             <TextView
+                android:id="@+id/sypnosis"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/sypnosis"
                 android:textAppearance="?android:attr/textAppearanceSmall"
-                android:padding="16dp"/>
-
+                android:padding="@dimen/general_padding"/>
 
     </LinearLayout>
 

@@ -1,6 +1,7 @@
-package com.example.android.popularmoviestestcareem;
+package com.example.android.popularmoviestestcareem.UI;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.example.android.popularmoviestestcareem.Models.Movie;
 import com.squareup.picasso.Picasso;
+import com.example.android.popularmoviestestcareem.R;
+
+import java.util.Objects;
+
+import static com.example.android.popularmoviestestcareem.Adapters.MovieAdapter.IMAGE_BASE_URL;
+import static com.example.android.popularmoviestestcareem.Adapters.MovieAdapter.PIC_SIZE;
+import static com.example.android.popularmoviestestcareem.UI.MainActivity.MOVIE_DATA_EXTRA;
 
 
 /**
@@ -29,9 +39,13 @@ public class ChildActivity extends AppCompatActivity{
 
         Log.d(TAG, "Activity created");
 
-        //Setting the toolbar
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        setToolbar();
+        setMovieDetails();
+    }
 
+    private void setToolbar(){
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null){
             setSupportActionBar(toolbar);
 
@@ -43,8 +57,15 @@ public class ChildActivity extends AppCompatActivity{
 
             toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.white));
         }
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("CareemTest");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Objects.requireNonNull(getSupportActionBar()).setTitle("CareemTest");
+        }
+    }
+
+    private void setMovieDetails(){
 
         //Identifying all the items
         ImageView movieDisplay =  findViewById(R.id.display_movie);
@@ -59,8 +80,8 @@ public class ChildActivity extends AppCompatActivity{
         Intent startChildActivityIntent = getIntent();
 
         if (startChildActivityIntent != null) {
-            if (startChildActivityIntent.hasExtra("MyClass")) {
-                Movie movie = startChildActivityIntent.getParcelableExtra("MyClass");
+            if (startChildActivityIntent.hasExtra(MOVIE_DATA_EXTRA)) {
+                Movie movie = startChildActivityIntent.getParcelableExtra(MOVIE_DATA_EXTRA);
 
                 String moviePath = movie.getMoviePath();
                 String voteAverage = movie.getUserRating();
@@ -73,7 +94,7 @@ public class ChildActivity extends AppCompatActivity{
                 voteAverage_tv.setText(voteAverageText);
                 sypnosis_tv.setText(movie.getSynopsis());
 
-                Picasso.with(this).load("http://image.tmdb.org/t/p/" + "w185" + moviePath).into(movieDisplay);
+                Picasso.with(this).load(IMAGE_BASE_URL + PIC_SIZE + moviePath).into(movieDisplay);
             }
         }
     }

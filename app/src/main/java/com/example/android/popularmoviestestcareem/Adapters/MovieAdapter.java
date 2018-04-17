@@ -1,6 +1,10 @@
-package com.example.android.popularmoviestestcareem;
+package com.example.android.popularmoviestestcareem.Adapters;
+
+import com.example.android.popularmoviestestcareem.Models.Movie;
+import com.example.android.popularmoviestestcareem.R;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,56 +21,49 @@ import java.util.List;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ImageViewHolder> {
 
+
+    final static public String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/";
+    final static public String PIC_SIZE = "w185";
     final private ListItemClickHandler mOnClickHandler;
-    int count;
 
 
-    List<Movie> movies;
+    private List<Movie> movies;
+
 
     public MovieAdapter(ListItemClickHandler listener) {
         mOnClickHandler = listener;
     }
 
-    public List<Movie> getMovies() {
-        return movies;
-    }
 
     public void setMovies(List<Movie> movies) {
         this.movies = movies;
     }
 
+    @NonNull
     @Override
-    public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // crear context + layout inflater + create view del movieitem inflando
-        // crear imageview holder y pasar el view que acabo de inflar + return imageview
+    public ImageViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
 
 
         Context context = parent.getContext();
         int layoutIdForPoster = R.layout.movieitem;
         LayoutInflater inflater = LayoutInflater.from(context);
-        boolean shouldAttachToParentImmediately = false;
 
-        View view = inflater.inflate(layoutIdForPoster, parent, shouldAttachToParentImmediately);
-        ImageViewHolder viewHolder = new ImageViewHolder(view);
+        View view = inflater.inflate(layoutIdForPoster, parent, false);
 
 
-        return viewHolder;
+        return new ImageViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ImageViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull ImageViewHolder viewHolder, int position) {
 
         Context context = viewHolder.poster.getContext();
-
-
         Movie movie = movies.get(position);
 
         String moviePath = movie.getMoviePath();
 
-        Picasso.with(context).load("http://image.tmdb.org/t/p/" + "w185" + moviePath).into(viewHolder.poster);
-
-
-        count = movies.size();
+        Picasso.with(context).load( IMAGE_BASE_URL + PIC_SIZE + moviePath).into(viewHolder.poster);
 
     }
 
@@ -83,7 +80,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ImageViewHol
         public ImageViewHolder(View itemView) {
             super(itemView);
 
-            poster = (ImageView) itemView.findViewById(R.id.movie_poster);
+            poster = itemView.findViewById(R.id.movie_poster);
 
             itemView.setOnClickListener(this);
         }

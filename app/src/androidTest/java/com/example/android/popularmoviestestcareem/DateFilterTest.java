@@ -20,16 +20,16 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 public class DateFilterTest {
 
     @Rule
-    public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
+    public ActivityTestRule<com.example.android.popularmoviestestcareem.UI.MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
 
 
     @Test
     public void clickFilterButton_OpensNumberPicker() {
 
-        // Locate and clicks on a movie
+        // Locate and clicks on the filter icon
         onView(withId(R.id.action_filter)).perform(click());
 
-        // Checks if the ChildActivity is displayed by asserting that the release date is displayed
+        // Checks if the Dialog is displayed by asserting that the numberPicker is displayed
         onView(withId(R.id.number_picker)).check(matches(isDisplayed()));
 
     }
