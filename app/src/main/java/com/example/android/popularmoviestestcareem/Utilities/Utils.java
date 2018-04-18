@@ -11,24 +11,9 @@ import com.example.android.popularmoviestestcareem.R;
 import com.example.android.popularmoviestestcareem.UI.MainActivity;
 import com.shawnlin.numberpicker.NumberPicker;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
-
-    private final static String RESULTS = "results";
-    private final static String ORIGINAL_TITLE = "original_title";
-    private final static String OVERVIEW = "overview";
-    private final static String VOTE_AVERAGE = "vote_average";
-    private final static String RELEASE_DATE = "release_date";
-    private final static String ID = "id";
-    private final static String POSTER_PATH = "poster_path";
-    private final static String PIC_SIZE = "w185";
-
 
 
     public static void buildFilterDialog(final List<Movie> movies, final Context context){

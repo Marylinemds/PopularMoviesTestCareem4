@@ -228,11 +228,9 @@ public class Movie implements Parcelable {
 
     public static final class Response {
 
-        @Expose
-        public int page;
 
         @Expose @SerializedName("results")
-        public List<Movie> movies;
+        private List<Movie> movies;
 
         public List<Movie> getMovies() {
             return movies;
