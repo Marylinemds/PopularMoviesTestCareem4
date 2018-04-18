@@ -21,6 +21,8 @@ import com.example.android.popularmoviestestcareem.Listeners.EndlessRecyclerView
 import com.example.android.popularmoviestestcareem.Models.Movie;
 import com.example.android.popularmoviestestcareem.R;
 
+import com.example.android.popularmoviestestcareem.Receiver.ConnectionReceiver;
+import com.example.android.popularmoviestestcareem.TestCareemApplication;
 import com.example.android.popularmoviestestcareem.Utilities.NetworkUtils;
 import com.example.android.popularmoviestestcareem.Utilities.Utils;
 
@@ -31,7 +33,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickHandler{
+public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickHandler ,ConnectionReceiver.ConnectionReceiverListener {
 
     @BindView(R.id.rv_frame_layout) FrameLayout rvFrameLayout;
     @BindView (R.id.error) TextView errorMessage;
@@ -41,13 +43,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String MOVIE_DATA_EXTRA = "movie_data_extra";
     public static MovieAdapter movieAdapter;
-
     public static AlertDialog dialog;
     public static List<Movie> movies = new ArrayList<>();
-    GridLayoutManager layoutManager;
-
     public static int releaseYear;
-    public EndlessRecyclerViewScrollListener scrollListener;
+
+    GridLayoutManager layoutManager;
+    EndlessRecyclerViewScrollListener scrollListener;
 
 
     @Override
@@ -73,11 +74,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         }
         Utils.makeTheQuery(movies, releaseYear, this);
 
-        if (!NetworkUtils.networkUp(this)){
-            rvFrameLayout.setVisibility(View.GONE);
-            errorMessage.setVisibility(View.VISIBLE);
-        }
+        checkConnection();
     }
+
+
 
     public void setAppBar(){
         if (toolbar != null){
@@ -154,4 +154,34 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         savedInstanceState.putInt("releaseYear", releaseYear);
     }
 
+    private void checkConnection() {
+        boolean isConnected = ConnectionReceiver.isConnected();
+        if(!isConnected) {
+            //show a No Internet Alert or Dialog
+            rvFrameLayout.setVisibility(View.GONE);
+            errorMessage.setVisibility(View.VISIBLE);
+        }
     }
+
+    @Override
+    public void onNetworkConnectionChanged(boolean isConnected) {
+
+        if (!isConnected){
+            rvFrameLayout.setVisibility(View.GONE);
+            errorMessage.setVisibility(View.VISIBLE);
+        }else{
+            rvFrameLayout.setVisibility(View.VISIBLE);
+            errorMessage.setVisibility(View.GONE);
+        }
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // register connection status listener
+        TestCareemApplication.getInstance().setConnectionListener(this);
+    }
+
+}

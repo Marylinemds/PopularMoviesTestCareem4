@@ -28,19 +28,9 @@ public class NetworkUtils {
 
 
     private final static String APIKey = "93aea0c77bc168d8bbce3918cefefa45";
-
     private final static String MOVIE_BASE_URL = "https://api.themoviedb.org/";
     private final static String RELEASE_DATE_DESC = "release_date.desc";
     private final static String RELEASE_DATE_MAX = "2018";
-
-
-
-    public static boolean networkUp(Context context) {
-        android.net.ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = null;
-        if (cm != null) { networkInfo = cm.getActiveNetworkInfo();}
-        return networkInfo != null && networkInfo.isConnectedOrConnecting();
-    }
 
 
     public static void QueryMoviesFromPage(String page, final Context context){

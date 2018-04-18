@@ -49,6 +49,7 @@ public class ChildActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_child);
 
+        ButterKnife.bind(this);
         Log.d(TAG, "Activity created");
 
         setToolbar();
