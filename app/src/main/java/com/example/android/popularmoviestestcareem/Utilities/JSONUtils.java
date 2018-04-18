@@ -19,10 +19,9 @@ public class JSONUtils {
     private final static String POSTER_PATH = "poster_path";
     private final static String PIC_SIZE = "w185";
 
-    public static void parseJSON(String jsonData, List<Movie> movies) throws JSONException {
+    public static List<Movie> parseJSON(JSONObject jsonData, List<Movie> movies) throws JSONException {
 
-        JSONObject obj = new JSONObject(jsonData);
-        JSONArray results = obj.getJSONArray(RESULTS);
+        JSONArray results = jsonData.getJSONArray(RESULTS);
 
         //iterate through JSON object and set fields to strings
         for (int i = 0; i < results.length(); i++) {
@@ -38,19 +37,19 @@ public class JSONUtils {
             String id = resultsData.getString(ID);
             String moviePath = resultsData.getString(POSTER_PATH).replace("\\Tasks", "");
 
-            if (resultsData.getString(POSTER_PATH) != "null") {
+            if (resultsData.getString(POSTER_PATH).equals("null")) {
 
                 movie = new Movie();
                 movie.setOriginalTitle(originalTitle);
                 movie.setSynopsis(synopsis);
-                movie.setUserRating(userRating);
+                movie.setUserRating(Double.valueOf(userRating));
                 movie.setReleaseDate(releaseDate);
-                movie.setId(id);
-                movie.setMoviePath(moviePath);
-                movie.setPicSize(PIC_SIZE);
+                movie.setId(Long.valueOf(id));
+                movie.setPosterPath(moviePath);
 
                 movies.add(movie);
             }
         }
+        return movies;
     }
 }

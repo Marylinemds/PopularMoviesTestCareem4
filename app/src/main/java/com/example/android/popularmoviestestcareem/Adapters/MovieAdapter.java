@@ -61,7 +61,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ImageViewHol
         Context context = viewHolder.poster.getContext();
         Movie movie = movies.get(position);
 
-        String moviePath = movie.getMoviePath();
+        String moviePath = movie.getPosterPath();
 
         Picasso.with(context).load( IMAGE_BASE_URL + PIC_SIZE + moviePath).into(viewHolder.poster);
 

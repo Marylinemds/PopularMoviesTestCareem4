@@ -21,15 +21,11 @@ import com.example.android.popularmoviestestcareem.Listeners.EndlessRecyclerView
 import com.example.android.popularmoviestestcareem.Models.Movie;
 import com.example.android.popularmoviestestcareem.R;
 
-import com.example.android.popularmoviestestcareem.Tasks.TheMovieAsyncTask;
 import com.example.android.popularmoviestestcareem.Utilities.NetworkUtils;
 import com.example.android.popularmoviestestcareem.Utilities.Utils;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-
-
 
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickHandler{
 
@@ -65,7 +61,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         if (savedInstanceState != null) {
             releaseYear = savedInstanceState.getInt("releaseYear");
         }
-        Utils.makeTheQuery(movies, releaseYear);
+        Utils.makeTheQuery(movies, releaseYear, this);
+
 
         //Displaying an error message, informing the user if there is no Internet connexion
         FrameLayout rvFrameLayout = findViewById((R.id.rv_frame_layout));
@@ -108,11 +105,12 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
                 // Triggered only when new data needs to be appended to the list
 
                 if (releaseYear == 0) {
-                    URL SearchUrl = NetworkUtils.buildUrlFromPage(page + 1);
-                    new TheMovieAsyncTask().execute(SearchUrl);
+                    NetworkUtils.QueryMoviesFromPage(String.valueOf(page+ 1), getApplicationContext()) ;
+                    MainActivity.movieAdapter.setMovies(movies);
+                    MainActivity.movieAdapter.notifyDataSetChanged();
+
                 }else{
-                    URL SearchUrl = NetworkUtils.buildUrlFromPageandYear(page + 1, releaseYear);
-                    new TheMovieAsyncTask().execute(SearchUrl);
+                   NetworkUtils.QueryMoviesFromPageAndYear(String.valueOf(page+ 1), String.valueOf(releaseYear), getApplicationContext()) ;
                 }
             }
         };

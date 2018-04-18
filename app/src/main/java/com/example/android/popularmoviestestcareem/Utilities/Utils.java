@@ -3,23 +3,20 @@ package com.example.android.popularmoviestestcareem.Utilities;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 
 import com.example.android.popularmoviestestcareem.Models.Movie;
 import com.example.android.popularmoviestestcareem.R;
-import com.example.android.popularmoviestestcareem.Tasks.TheMovieAsyncTask;
 import com.example.android.popularmoviestestcareem.UI.MainActivity;
 import com.shawnlin.numberpicker.NumberPicker;
 
-import java.net.URL;
 import java.util.List;
 
 public class Utils {
 
 
-    public static void buildFilterDialog(final List<Movie> movies, Context context){
+    public static void buildFilterDialog(final List<Movie> movies, final Context context){
 
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         // Get the layout inflater
@@ -38,7 +35,7 @@ public class Utils {
                         movies.clear();
 
                         MainActivity.releaseYear = np.getValue();
-                        makeTheQuery(movies, MainActivity.releaseYear);
+                        makeTheQuery(movies, MainActivity.releaseYear, context);
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -48,7 +45,7 @@ public class Utils {
                         np.setValue(2018);
                         MainActivity.releaseYear = 0;
 
-                        makeTheQuery(movies, MainActivity.releaseYear);
+                        makeTheQuery(movies, MainActivity.releaseYear, context);
                     }
                 });
         builder.setTitle("Release year");
@@ -60,17 +57,17 @@ public class Utils {
     }
 
 
-    public static void makeTheQuery(List<Movie> movies, int releaseYear) {
+    public static void makeTheQuery(List<Movie> movies, int releaseYear, Context context) {
         //After clearing the list of movies, making the general query/filtered query
 
         movies.clear();
 
         if (MainActivity.releaseYear == 0) {
-            URL SearchUrl = NetworkUtils.buildUrlFromPage(1);
-            new TheMovieAsyncTask().execute(SearchUrl);
+            NetworkUtils.QueryMoviesFromPage("1",context) ;
+
         }else{
-            URL SearchUrl = NetworkUtils.buildUrlFromPageandYear(1, releaseYear);
-            new TheMovieAsyncTask().execute(SearchUrl);
+            NetworkUtils.QueryMoviesFromPageAndYear("1", String.valueOf(releaseYear),context) ;
+
         }
     }
 }

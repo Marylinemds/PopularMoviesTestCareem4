@@ -83,8 +83,8 @@ public class ChildActivity extends AppCompatActivity{
             if (startChildActivityIntent.hasExtra(MOVIE_DATA_EXTRA)) {
                 Movie movie = startChildActivityIntent.getParcelableExtra(MOVIE_DATA_EXTRA);
 
-                String moviePath = movie.getMoviePath();
-                String voteAverage = movie.getUserRating();
+                String moviePath = movie.getPosterPath();
+                String voteAverage = String.valueOf(movie.getUserRating());
                 String voteAverageText = "(" + movie.getUserRating()+ "/10" + ")";
 
                 originalTitle_tv.setText(movie.getOriginalTitle());
