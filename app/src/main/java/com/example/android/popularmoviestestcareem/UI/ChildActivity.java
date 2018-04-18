@@ -18,6 +18,9 @@ import com.example.android.popularmoviestestcareem.R;
 
 import java.util.Objects;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 import static com.example.android.popularmoviestestcareem.Adapters.MovieAdapter.IMAGE_BASE_URL;
 import static com.example.android.popularmoviestestcareem.Adapters.MovieAdapter.PIC_SIZE;
 import static com.example.android.popularmoviestestcareem.UI.MainActivity.MOVIE_DATA_EXTRA;
@@ -28,6 +31,15 @@ import static com.example.android.popularmoviestestcareem.UI.MainActivity.MOVIE_
  */
 
 public class ChildActivity extends AppCompatActivity{
+
+    @BindView(R.id.toolbar)Toolbar toolbar ;
+    @BindView(R.id.display_movie) ImageView movieDisplay ;
+    @BindView(R.id.movie_title) TextView originalTitle_tv ;
+    @BindView(R.id.movie_title_2)TextView originalTitle_tv_2 ;
+    @BindView(R.id.release_date)TextView releaseDate_tv ;
+    @BindView(R.id.vote_average_2)TextView voteAverage_tv ;
+    @BindView(R.id.vote_average)RatingBar voteAverage_rb ;
+    @BindView(R.id.sypnosis)TextView sypnosis_tv;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -45,7 +57,6 @@ public class ChildActivity extends AppCompatActivity{
 
     private void setToolbar(){
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
         if (toolbar != null){
             setSupportActionBar(toolbar);
 
@@ -67,14 +78,6 @@ public class ChildActivity extends AppCompatActivity{
 
     private void setMovieDetails(){
 
-        //Identifying all the items
-        ImageView movieDisplay =  findViewById(R.id.display_movie);
-        TextView originalTitle_tv = findViewById(R.id.movie_title);
-        TextView originalTitle_tv_2 =  findViewById(R.id.movie_title_2);
-        TextView releaseDate_tv = findViewById(R.id.release_date);
-        TextView voteAverage_tv =  findViewById(R.id.vote_average_2);
-        RatingBar voteAverage_rb =  findViewById(R.id.vote_average);
-        TextView sypnosis_tv =  findViewById(R.id.sypnosis);
 
         //Getting the information from the item clicked on MainActivity, and assign it to the layout
         Intent startChildActivityIntent = getIntent();

@@ -27,14 +27,22 @@ import com.example.android.popularmoviestestcareem.Utilities.Utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+
 public class MainActivity extends AppCompatActivity implements MovieAdapter.ListItemClickHandler{
+
+    @BindView(R.id.rv_frame_layout) FrameLayout rvFrameLayout;
+    @BindView (R.id.error) TextView errorMessage;
+    @BindView (R.id.toolbar) Toolbar toolbar;
+    @BindView (R.id.rv_images) RecyclerView mMoviesList;
 
     private static final String TAG = MainActivity.class.getSimpleName();
     public static final String MOVIE_DATA_EXTRA = "movie_data_extra";
     public static MovieAdapter movieAdapter;
 
     public static AlertDialog dialog;
-    RecyclerView mMoviesList;
     public static List<Movie> movies = new ArrayList<>();
     GridLayoutManager layoutManager;
 
@@ -46,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
 
         Log.d(TAG, "Activity created");
 
@@ -63,11 +73,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
         }
         Utils.makeTheQuery(movies, releaseYear, this);
 
-
-        //Displaying an error message, informing the user if there is no Internet connexion
-        FrameLayout rvFrameLayout = findViewById((R.id.rv_frame_layout));
-        TextView errorMessage = findViewById(R.id.error);
-
         if (!NetworkUtils.networkUp(this)){
             rvFrameLayout.setVisibility(View.GONE);
             errorMessage.setVisibility(View.VISIBLE);
@@ -75,8 +80,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     }
 
     public void setAppBar(){
-        Toolbar toolbar = findViewById(R.id.toolbar);
-
         if (toolbar != null){
             setSupportActionBar(toolbar);
             toolbar.setTitleTextColor(ContextCompat.getColor(this,R.color.white));
@@ -88,7 +91,6 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.List
     }
 
     public void setRecyclerView(){
-        mMoviesList =  findViewById(R.id.rv_images);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             layoutManager = new GridLayoutManager(this, 2);
