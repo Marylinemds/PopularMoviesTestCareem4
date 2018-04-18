@@ -87,8 +87,8 @@ public class ChildActivity extends AppCompatActivity{
                 String voteAverage = String.valueOf(movie.getUserRating());
                 String voteAverageText = "(" + movie.getUserRating()+ "/10" + ")";
 
-                originalTitle_tv.setText(movie.getOriginalTitle());
-                originalTitle_tv_2.setText(movie.getOriginalTitle());
+                originalTitle_tv.setText(movie.getTitle());
+                originalTitle_tv_2.setText(movie.getTitle());
                 releaseDate_tv.setText(movie.getReleaseDate().substring(0, 4));
                 voteAverage_rb.setRating((Float.valueOf(voteAverage)) / 2);
                 voteAverage_tv.setText(voteAverageText);

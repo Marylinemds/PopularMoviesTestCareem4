@@ -51,6 +51,7 @@ public class Utils {
 
                         MainActivity.releaseYear = np.getValue();
                         makeTheQuery(movies, MainActivity.releaseYear, context);
+
                     }
                 })
                 .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
@@ -79,7 +80,7 @@ public class Utils {
 
         if (MainActivity.releaseYear == 0) {
             NetworkUtils.QueryMoviesFromPage("1",context) ;
-            //clean list of movies and notify adapter
+
 
 
         }else{
@@ -88,18 +89,16 @@ public class Utils {
         }
     }
 
-    public static List<Movie> cleanMoviesList(List<Movie> movies){
-        List<Movie> movies2 = new ArrayList<>();
+    public static void cleanAndAddMovies(Movie.Response resultsMovies){
+        if (resultsMovies != null) {
+            List<Movie> movies =  resultsMovies.getMovies();
 
-        for (int i = 0; i < movies.size()-1; i++) {
+            for (int i = 0; i<movies.size(); i++){
+                Movie movie = movies.get(i);
 
-            Movie movie = movies.get(i);
-
-            if (!movie.getPosterPath().equals("null")) {
-
-                movies2.add(movie);
+                if (movie.getPosterPath() != null){
+                    MainActivity.movies.add(movie);
+                }
             }
-        }
-        return movies2;
     }
-}
+}}

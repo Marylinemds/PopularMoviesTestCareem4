@@ -138,24 +138,9 @@ public class NetworkUtils {
             @Override
             public void onResponse(@NonNull Call<Movie.Response>  call, @NonNull Response<Movie.Response>  response) {
                 Movie.Response jsonMovies = response.body();
-                if (jsonMovies != null) {
-                    List<Movie> movies =  jsonMovies.getMovies();
-
-                    for (int i = 0; i<movies.size(); i++){
-                        Movie movie = movies.get(i);
-
-                        if (movie.getPosterPath() != null){
-                            MainActivity.movies.add(movie);
-                        }
-                    }
-                    //movies2 = Utils.cleanMoviesList(movies);
-                    //MainActivity.movies.addAll(movies);
-
+                Utils.cleanAndAddMovies(jsonMovies);
                     MainActivity.movieAdapter.setMovies(MainActivity.movies);
                     MainActivity.movieAdapter.notifyDataSetChanged();
-
-                }
-
             }
 
             @Override
@@ -175,16 +160,17 @@ public class NetworkUtils {
 
         MoviesApi moviesApi = retrofit.create(MoviesApi.class);
 
-        Call<Movie.Response> call = moviesApi.getMoviesFromPageAndYear(APIKey, RELEASE_DATE_DESC, RELEASE_DATE_MAX, page);
+        Call<Movie.Response> call = moviesApi.getMoviesFromPageAndYear(APIKey, RELEASE_DATE_DESC, page,String.valueOf(MainActivity.releaseYear));
 
         call.enqueue(new Callback<Movie.Response> () {
             @Override
-            public void onResponse(Call<Movie.Response>  call, Response<Movie.Response>  response) {
+            public void onResponse(@NonNull Call<Movie.Response>  call, @NonNull Response<Movie.Response>  response) {
                 Movie.Response jsonMovies = response.body();
-                List <Movie> movies = jsonMovies.getMovies();
-                MainActivity.movieAdapter.setMovies(movies);
-                MainActivity.movieAdapter.notifyDataSetChanged();
 
+                Utils.cleanAndAddMovies(jsonMovies);
+
+                MainActivity.movieAdapter.setMovies(MainActivity.movies);
+                MainActivity.movieAdapter.notifyDataSetChanged();
             }
 
             @Override
