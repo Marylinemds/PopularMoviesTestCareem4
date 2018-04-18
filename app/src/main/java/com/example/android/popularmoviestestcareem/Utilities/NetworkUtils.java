@@ -140,7 +140,16 @@ public class NetworkUtils {
                 Movie.Response jsonMovies = response.body();
                 if (jsonMovies != null) {
                     List<Movie> movies =  jsonMovies.getMovies();
-                    MainActivity.movies.addAll(movies);
+
+                    for (int i = 0; i<movies.size(); i++){
+                        Movie movie = movies.get(i);
+
+                        if (movie.getPosterPath() != null){
+                            MainActivity.movies.add(movie);
+                        }
+                    }
+                    //movies2 = Utils.cleanMoviesList(movies);
+                    //MainActivity.movies.addAll(movies);
 
                     MainActivity.movieAdapter.setMovies(MainActivity.movies);
                     MainActivity.movieAdapter.notifyDataSetChanged();

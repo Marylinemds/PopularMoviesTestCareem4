@@ -11,9 +11,24 @@ import com.example.android.popularmoviestestcareem.R;
 import com.example.android.popularmoviestestcareem.UI.MainActivity;
 import com.shawnlin.numberpicker.NumberPicker;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class Utils {
+
+    private final static String RESULTS = "results";
+    private final static String ORIGINAL_TITLE = "original_title";
+    private final static String OVERVIEW = "overview";
+    private final static String VOTE_AVERAGE = "vote_average";
+    private final static String RELEASE_DATE = "release_date";
+    private final static String ID = "id";
+    private final static String POSTER_PATH = "poster_path";
+    private final static String PIC_SIZE = "w185";
+
 
 
     public static void buildFilterDialog(final List<Movie> movies, final Context context){
@@ -64,10 +79,27 @@ public class Utils {
 
         if (MainActivity.releaseYear == 0) {
             NetworkUtils.QueryMoviesFromPage("1",context) ;
+            //clean list of movies and notify adapter
+
 
         }else{
             NetworkUtils.QueryMoviesFromPageAndYear("1", String.valueOf(releaseYear),context) ;
 
         }
+    }
+
+    public static List<Movie> cleanMoviesList(List<Movie> movies){
+        List<Movie> movies2 = new ArrayList<>();
+
+        for (int i = 0; i < movies.size()-1; i++) {
+
+            Movie movie = movies.get(i);
+
+            if (!movie.getPosterPath().equals("null")) {
+
+                movies2.add(movie);
+            }
+        }
+        return movies2;
     }
 }
